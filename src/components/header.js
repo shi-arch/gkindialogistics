@@ -6,7 +6,7 @@ const Header = (props) => {
       return (
             <React.Fragment>
                   <div style={{ background: "rgb(226 229 232)", marginBottom: "25px" }}>
-                        <div className="container" style={{ padding: "10px 0px" }}>
+                        <div className="container" style={{ padding: "10px 0px"}}>
                               <div className="row">
                                     <div className="col-md-4"><img style={{ width: "60px" }} src={Parcel} /></div>
                                     <div className="col-md-4">
