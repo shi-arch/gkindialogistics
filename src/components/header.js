@@ -10,7 +10,7 @@ const Header = (props) => {
                               <div className="row">
                                     <div className="col-md-4"><img style={{ width: "60px" }} src={Parcel} /></div>
                                     <div className="col-md-4">
-                                          <h1 style={{ color: "blue" }}>DELHIVERY</h1>
+                                          <h1 style={{ color: "blue" }}>DELHIVERY TEST</h1>
                                     </div>
                                     <div className="col-md-4" style={{marginTop: "10px"}}>
                                           <Button variant="contained" color="primary" style={{marginRight: "10px"}}>

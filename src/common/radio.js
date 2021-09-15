@@ -17,7 +17,6 @@ export default function RadioButtonsGroup() {
       <RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleChange}>
         <FormControlLabel value="mobileNumber" control={<Radio />} label="Mobile Number" />
         <FormControlLabel value="trackingId" control={<Radio />} label="Tracking-Id" />
-        <FormControlLabel value="emailId" control={<Radio />} label="Email-Id" />
       </RadioGroup>
     </FormControl>
   );
