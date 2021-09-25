@@ -11,13 +11,22 @@ import BackgroundImage from '../assets/backgroundimage.jpg';
 import { Container, Col, Form, Row, FormGroup, Label, Input, Button, Table } from 'reactstrap';
 import { params } from '../constants/constants'
 import { useHistory } from "react-router-dom";
-import Box from '@mui/material/Box';
+import { makeStyles } from '@material-ui/core/styles';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import swal from 'sweetalert';
 
+const useStyles = makeStyles((theme) => ({
+    "@media (max-width: 533px)": {
+        botSpace: {
+            marginTop: "-13%!important"
+        },
+    }
+}));
+
 export default function MainPage() {
+      const classes = useStyles();
       const history = useHistory()
       const [type, setType] = React.useState("Enter Mobile Number");
       const [totalPages, setTotalPages] = React.useState("");
@@ -125,7 +134,7 @@ export default function MainPage() {
             <LoadingOverlay active={loading} spinner text='Loading your content...'>
                   <div style={{ backgroundImage: "url(" + BackgroundImage + ")", backgroundSize: "cover", height: "110vh", backgroundPosition: "center", marginBottom: "90px" }}>
                         <Header isLoginComplete={isLoginComplete} />
-                        <div className="container" style={{ textAlign: "center", marginTop: "7%" }}>
+                        <div className={classes.botSpace} style={{ textAlign: "center", marginTop: "7%", margin: "0px 5px" }}>
                               <Row>
                                     <Col md={4}>
                                     </Col>
@@ -167,13 +176,13 @@ export default function MainPage() {
                                           <>
                                                 <div style={{ height: "52px", background: "#f3f3f3", marginTop: "10px", borderRadius: "10px 10px 0px 0px" }}>
                                                       <Row>
-                                                            <Col md={4}>
+                                                            <Col md={4} xs={5} sm={5}>
                                                                   <Pagination style={{ marginTop: "20px" }} count={totalPages} onChange={paging} />
                                                             </Col>
-                                                            <Col md={4}>
+                                                            <Col md={4} xs={4} sm={4}>
                                                                   <h4 style={{ textAlign: "center", paddingTop: "10px" }}>Parcel List</h4>
                                                             </Col>
-                                                            <Col md={4}>
+                                                            <Col md={4} xs={3} sm={3}>
                                                                   <Button variant="contained" onClick={clear} color="danger" style={{ float: "right" }}>
                                                                         Clear
                                                                   </Button>

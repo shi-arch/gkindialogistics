@@ -136,23 +136,23 @@ export default function UserList() {
         <Header />
         <div style={{ textAlign: "center", padding: "0px 15px" }}>
           <Row>
-            <Col md={12}>
-              <div style={{ height: "60px", background: "#f3f3f3", borderRadius: "10px 10px 0px 0px" }}>
+            <Col md={12} xs={12} sm={12}>
+              <div style={{ background: "#f3f3f3", borderRadius: "10px 10px 0px 0px" }}>
                 <Row>
-                  <Col md={3}>
+                  <Col md={3} xs={6} sm={6}>
+                    <h4 style={{ textAlign: "center", paddingTop: "14px" }}>Parcel List</h4>
+                  </Col>
+                  <Col md={3} xs={6} sm={6}>
                     <Button onClick={updateMultiple} style={{ marginTop: "12px" }} color="primary">
                       Multiple Status Update
                     </Button>
                   </Col>
-                  <Col md={3}>
+                  <Col md={3} xs={6} sm={6}>
                     <Button onClick={goToForm} style={{ marginTop: "12px" }} color="primary">
                       Add Parcel
                     </Button>
                   </Col>
-                  <Col md={3}>
-                    <h4 style={{ textAlign: "center", paddingTop: "14px" }}>Parcel List</h4>
-                  </Col>
-                  <Col md={3}>
+                  <Col md={3} xs={6} sm={6}>
                     <FormControl className={classes.formControl}>
                       <InputLabel id="demo-simple-select-label">Status</InputLabel>
                       <Select

@@ -157,14 +157,14 @@ export default function UserList() {
         <>
         <LoadingOverlay active={loading} spinner text='Loading your content...'>
         <Header />
-            <Row>
+            <Row style={{margin:"0px 10px"}}>
                 <Col md={3}>
                 </Col>
                 <Col md={6}>
                     <div style={{ height: "60px", background: "#f3f3f3", borderRadius: "10px 10px 0px 0px" }}>
                         <h4 style={{ textAlign: "center", paddingTop: "14px" }}>Parcel Entry</h4>
                     </div>
-                    <form className={classes.root} noValidate autoComplete="off" style={{ maxWidth: "none" }}>
+                    <form className={classes.root} noValidate autoComplete="off" style={{ maxWidth: "none", marginBottom: "110px" }}>
                         <Row>
                             <Col md={6}>                           
                                 <TextField style={{ width: "100%" }} id="standard-basic" value={name} onChange={getData} name="name" label="Name" />

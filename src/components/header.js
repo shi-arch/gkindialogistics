@@ -26,6 +26,11 @@ const useStyles = makeStyles((theme) => ({
                   width: '25ch',
             },
       },
+    "@media (max-width: 533px)": {
+        test: {
+            textAlign: "center!important"
+        },
+    }
 }));
 
 
@@ -125,8 +130,8 @@ const Header = (props) => {
                               <Col md={2} sm={6} xs={6}>
                                     <img style={{ width: "100px" }} src={Parcel} />
                               </Col>
-                              <Col md={5}>
-                                    <h1 style={{ color: "blue", textAlign: "end" }}>GKINDIALOGISTICS</h1>
+                              <Col md={5} sm={4}>
+                                    <h1 className={classes.test} style={{ color: "blue", textAlign: "end" }}>GKINDIALOGISTICS</h1>
                               </Col>
                               <Col md={4}>
                                     <Button variant="contained" onClick={goBack} style={{ marginRight: "10px" }} color="primary">
