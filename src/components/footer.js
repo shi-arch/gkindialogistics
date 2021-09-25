@@ -1,24 +1,32 @@
 import React, { useState } from 'react';
-import Copyright from '../assets/copyright.png';
-import { Container, Col, Form, Row, FormGroup, Label, Input, Button } from 'reactstrap';  
+import Copyright from '../assets/copyright.jpeg';
+import { Container, Col, Form, Row, FormGroup, Label, Input, Button } from 'reactstrap';
 import '../App.css';
 
 const Footer = (props) => {
       return (
             <React.Fragment>
-                  <div style={{ background: "black" }} className="footer">
-                        <div style={{ padding: "10px 0px", margin: "0px 10px" }}>
-                              <div className="row">
-                                    <div className="col-md-4 col-sm-4 col-xs-4"><img style={{ width: "60px", float: "left", marginTop: "8px" }} src={Copyright} /></div>
-                                    <div className="col-md-4 col-sm-4 col-xs-4">
-                                          <h1 style={{ color: "white" }}>DELHIVERY</h1>
-                                    </div>
-                                    <div className="col-md-4 col-sm-4 col-xs-4" style={{marginTop: "10px"}}>                                          
-                                          <Button variant="contained" className="btn btn-danger" style={{float: "right"}}>
+                  <div className="footer">
+                        <div style={{ padding: "10px 10px", background: "black"}}>
+                              <Row>
+                                    <Col md={4}>
+                                          <img style={{ width: "60px", float: "left" }} src={Copyright} />
+                                    </Col>
+                                    <Col md={4}>
+                                          <span style={{ color: "#dc3545" }}>Company</span>
+                                          <a href="/">
+                                                <span style={{ color: "#fff", display: "block" }}>About us</span>
+                                          </a>
+                                          <a href="/">
+                                                <span style={{ color: "#fff", display: "block" }}>Services</span>
+                                          </a>
+                                    </Col>
+                                    <Col md={4}>
+                                          <Button variant="contained" className="btn btn-danger" style={{ float: "right", marginTop: "5px" }}>
                                                 Contact Us
                                           </Button>
-                                    </div>
-                              </div>
+                                    </Col>
+                              </Row>
                         </div>
                   </div>
             </React.Fragment>
