@@ -2,6 +2,7 @@ import React, { Component, useEffect } from 'react';
 import Header from './header'
 import Footer from './footer'
 import { makeStyles } from '@material-ui/core/styles';
+import HighlightOff from '@mui/icons-material/HighlightOff';
 import TextField from '@material-ui/core/TextField';
 import Pagination from '@material-ui/lab/Pagination';
 import { CountryDropdown, RegionDropdown, CountryRegionData } from 'react-country-region-selector';
@@ -94,10 +95,38 @@ export default function UserList() {
       arr.push({ parcelNumber: val })
     } else {
       const findVal = arr.find(item => item.parcelNumber == val)
-      const findIndex = arr.findIndex(element => element.parcelNumber == findVal.parcelNumber)
+      const findIndex = arr.findIndex(element => element.parcelNumber == findVal && findVal.parcelNumber)
       arr.splice(findIndex, 1)
     }
     setSelectedParcelNumbers(arr)
+  }
+  const deleteData = async (val) => {
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this parcel!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+      .then(async (willDelete) => {
+        setLoading(true)
+        if (willDelete) {
+          const response = await apiResponse(params.baseUrl + "deleteparcel", { data: [{ parcelNumber: val }], status: age })
+          if (response && response.data && response.data.status) {
+            swal("Poof! Your parcel has been deleted!", {
+              icon: "success",
+            });
+            setUpdate(!update)
+          } else {
+            swal("Error!", "Something went wrong", "error");
+          }
+
+        } else {
+          swal("Your parcel is safe!");
+          setLoading(false)
+        }
+      });
+    setLoading(false)
   }
   const changeStatus = async (val) => {
     setLoading(true)
@@ -126,29 +155,69 @@ export default function UserList() {
     }
     setLoading(false)
   }
+  const deleteMultiple = async () => {
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this parcel!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+      .then(async (willDelete) => {
+        setLoading(true)
+        if (willDelete) {          
+          if (!selectedParcelNumbers.length) {
+            swal("Error!", "Please select some value", "error");
+          } else {
+            const response = await apiResponse(params.baseUrl + "deleteparcel", { data: selectedParcelNumbers, status: age })
+            if (response && response.data && response.data.status) {
+              setUpdate(!update)
+              swal("Poof! Your parcel has been deleted!", {
+                icon: "success",
+              });
+            } else {
+              swal("Error!", "Something went wrong", "error");
+            }
+          }          
+        } else {
+          swal("Your parcel is safe!");
+          setLoading(false)
+        }
+      });
+      setLoading(false)
+  }
   const goToForm = () => {
     history.push("/form")
   }
 
   return (
     <>
-      <LoadingOverlay active={loading} spinner text='Loading your content...'>
+      <LoadingOverlay active={loading} styles={{
+        wrapper: {
+          width: '100%',
+          position: "absolute",
+          height: '100%',
+          overflow: loading ? 'hidden' : 'scroll'
+        }
+      }} spinner text='Loading your content...'>
         <Header />
-        <div style={{ textAlign: "center", padding: "0px 15px" }}>
+        <div style={{ textAlign: "center", padding: "0px 20px 25px 20px" }}>
           <Row>
             <Col md={12} xs={12} sm={12}>
               <div style={{ background: "#f3f3f3", borderRadius: "10px 10px 0px 0px" }}>
                 <Row>
                   <Col md={3} xs={6} sm={6}>
-                    <h4 style={{ textAlign: "center", paddingTop: "14px" }}>Parcel List</h4>
+                    <Button onClick={deleteMultiple} style={{ marginTop: "12px", background: "rgb(15, 153, 211)" }} color="primary">
+                      Multiple parcel delete
+                    </Button>
                   </Col>
                   <Col md={3} xs={6} sm={6}>
-                    <Button onClick={updateMultiple} style={{ marginTop: "12px" }} color="primary">
+                    <Button onClick={updateMultiple} style={{ marginTop: "12px", background: "rgb(15, 153, 211)" }} color="primary">
                       Multiple Status Update
                     </Button>
                   </Col>
                   <Col md={3} xs={6} sm={6}>
-                    <Button onClick={goToForm} style={{ marginTop: "12px" }} color="primary">
+                    <Button onClick={goToForm} style={{ marginTop: "12px", background: "rgb(15, 153, 211)" }} color="primary">
                       Add Parcel
                     </Button>
                   </Col>
@@ -163,8 +232,9 @@ export default function UserList() {
                       >
                         <MenuItem value={"Recieved"}>Recieved</MenuItem>
                         <MenuItem value={"Dispatch"}>Dispatch</MenuItem>
-                        <MenuItem value={"Dilivered"}>Dilivered</MenuItem>
+                        <MenuItem value={"Dilivered"}>Delivered</MenuItem>
                         <MenuItem value={"Returned"}>Returned</MenuItem>
+                        <MenuItem value={"Delivery Confirmed"}>Delivery Confirm</MenuItem>
                       </Select>
                     </FormControl>
                   </Col>
@@ -189,7 +259,7 @@ export default function UserList() {
                     parcelData && parcelData.length ?
                       parcelData.map((item, index) => (
                         <tr>
-                          <td>{index + 1}<Checkbox onChange={(e) => getParcelId(item.parcelNumber, e)} {...label} /></td>
+                          <td>{index + 1}<Checkbox id={index} onChange={(e) => getParcelId(item.parcelNumber, e)} {...label} /></td>
                           <td>{item.name}</td>
                           <td>{item.contact}</td>
                           <td>{item.city}</td>
@@ -199,6 +269,9 @@ export default function UserList() {
                           <td>{item.status}</td>
                           <td>
                             <Button style={{ marginTop: "10px" }} onClick={() => changeStatus(item.parcelNumber)} color="primary">Status Update</Button>
+                            <Button style={{ marginTop: "10px", marginLeft: "10px" }} color="primary">
+                              < HighlightOff onClick={() => deleteData(item.parcelNumber)} />
+                            </Button>
                           </td>
                         </tr>
                       )) : <h1>No Data Found</h1>
@@ -209,7 +282,6 @@ export default function UserList() {
           </Row>
           <Pagination style={{ marginBottom: "101px" }} count={totalPages} onChange={paging} />
         </div>
-
         <Footer />
       </LoadingOverlay>
 

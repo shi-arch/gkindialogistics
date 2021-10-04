@@ -2,13 +2,13 @@ import React, { Component, useEffect } from 'react';
 import Header from './header'
 import Pagination from '@material-ui/lab/Pagination';
 import Footer from './footer'
+import SearchBar from 'material-ui-search-bar'
 import Radio from '../common/radio'
 import { TextField, Icon } from '@material-ui/core';
 import LoadingOverlay from 'react-loading-overlay';
+import HighlightOff from '@mui/icons-material/HighlightOff';
 import { apiResponse } from '../apiresponse/response'
-import IconButton from "@material-ui/core/IconButton";
-import BackgroundImage from '../assets/backgroundimage.jpg';
-import { Container, Col, Form, Row, FormGroup, Label, Input, Button, Table } from 'reactstrap';
+import { Container, Col, Form, Row, Button, Table } from 'reactstrap';
 import { params } from '../constants/constants'
 import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
@@ -18,11 +18,11 @@ import Typography from '@mui/material/Typography';
 import swal from 'sweetalert';
 
 const useStyles = makeStyles((theme) => ({
-    "@media (max-width: 533px)": {
-        botSpace: {
-            marginTop: "-13%!important"
-        },
-    }
+      "@media (max-width: 533px)": {
+            botSpace: {
+                  marginTop: "-13%!important"
+            },
+      }
 }));
 
 export default function MainPage() {
@@ -56,7 +56,7 @@ export default function MainPage() {
                   setSkip((parseInt(val.currentTarget.outerText) - 1) * 5)
                   skipVal = (parseInt(val.currentTarget.outerText) - 1) * 5
                   setCurrentPage(parseInt(val.currentTarget.outerText))
-            }            
+            }
             let obj = {}
             if (type == "Enter Mobile Number") {
                   obj.contact = info
@@ -83,7 +83,9 @@ export default function MainPage() {
             }
             setLoading(false)
       }
-
+      const clean = () => {
+            setInfo("")
+      }
       const search = async () => {
             setLoading(true)
             let obj = {}
@@ -97,6 +99,7 @@ export default function MainPage() {
             obj.skip = 0
             obj.limit = 5
             const response = await apiResponse(params.baseUrl + "searchparcel", obj)
+            debugger
             if (response && response.data && response.data.status) {
                   setParcelData(response.data.data.data)
                   setTotalCount(response.data.data.count)
@@ -114,8 +117,7 @@ export default function MainPage() {
             setLoading(false)
       }
       const getInfo = (e) => {
-            const { value } = e.target
-            setInfo(value)
+            setInfo(e)
       }
       const getType = (value) => {
             if (value == "trackingId") {
@@ -131,10 +133,17 @@ export default function MainPage() {
             setLoading(value)
       }
       return (
-            <LoadingOverlay active={loading} spinner text='Loading your content...'>
-                  <div style={{ backgroundImage: "url(" + BackgroundImage + ")", backgroundSize: "cover", height: "110vh", backgroundPosition: "center", marginBottom: "90px" }}>
+            <LoadingOverlay active={loading} styles={{
+                  wrapper: {
+                    width: '100%',
+                    position: "absolute",
+                    height: '100%',
+                    overflow: loading ? 'hidden' : 'scroll'
+                  }
+                }} spinner text='Loading your content...'>
+                  <div>
                         <Header isLoginComplete={isLoginComplete} />
-                        <div className={classes.botSpace} style={{ textAlign: "center", marginTop: "7%", margin: "0px 5px" }}>
+                        <div  style={{ textAlign: "center", marginTop: "7%", margin: "0px 5px" }}>
                               <Row>
                                     <Col md={4}>
                                     </Col>
@@ -156,11 +165,18 @@ export default function MainPage() {
                                                                   }}
                                                             /> */}
                                                             <Row style={{ margin: "0px 10px" }}>
-                                                                  <Col md={8} sm={8} xs={8}>
-                                                                        <TextField placeholder={type} onChange={getInfo} vlaue={""} style={{ display: "block" }} />
-                                                                  </Col>
-                                                                  <Col md={4} sm={4} xs={4}>
-                                                                        <Button onClick={search} color="primary">Search</Button>
+                                                                  <Col md={12} sm={12} xs={12}>
+                                                                        {/* <TextField placeholder={type} onChange={getInfo} vlaue={""} style={{ display: "block" }} /> */}
+                                                                        <SearchBar
+                                                                              value={info}
+                                                                              onChange={getInfo}
+                                                                              onRequestSearch={search}
+                                                                              onCancelSearch={clean}
+                                                                              style={{
+                                                                                    margin: '0 auto',
+                                                                                    maxWidth: 800
+                                                                              }}
+                                                                        />
                                                                   </Col>
                                                             </Row>
 
@@ -173,7 +189,7 @@ export default function MainPage() {
                               </Row>
                               {
                                     parcelData && parcelData.length ?
-                                          <>
+                                          <div style={{marginLeft: "20px", marginRight: "20px"}}>
                                                 <div style={{ height: "52px", background: "#f3f3f3", marginTop: "10px", borderRadius: "10px 10px 0px 0px" }}>
                                                       <Row>
                                                             <Col md={4} xs={5} sm={5}>
@@ -182,19 +198,21 @@ export default function MainPage() {
                                                             <Col md={4} xs={4} sm={4}>
                                                                   <h4 style={{ textAlign: "center", paddingTop: "10px" }}>Parcel List</h4>
                                                             </Col>
-                                                            <Col md={4} xs={3} sm={3}>
-                                                                  <Button variant="contained" onClick={clear} color="danger" style={{ float: "right" }}>
+                                                            <Col md={4} xs={3} sm={3} style={{textAlign: "right", cursor: "pointer"}}>
+                                                                  < HighlightOff onClick={clear} />
+                                                                  {/* <Button variant="contained" onClick={clear} style={{ float: "right" }}>
                                                                         Clear
-                                                                  </Button>
+                                                                  </Button> */}
                                                             </Col>
                                                       </Row>
                                                 </div>
                                                 <Table striped bordered hover style={{ marginBottom: "150px" }}>
-                                                      <thead style={{ background: "#dc3545" }}>
+                                                      <thead style={{ background: "rgb(15, 153, 211)" }}>
                                                             <tr>
                                                                   <th>#</th>
-                                                                  <th>Name</th>
-                                                                  <th>Parcel No.</th>
+                                                                  <th>Date</th>
+                                                                  <th>Time</th>
+                                                                  <th>Branch Name</th>
                                                                   <th>status</th>
                                                             </tr>
                                                       </thead>
@@ -204,15 +222,24 @@ export default function MainPage() {
                                                                         parcelData.map((item, index) => (
                                                                               <tr>
                                                                                     <td>{index + 1}</td>
-                                                                                    <td>{item.name}</td>
-                                                                                    <td>{"GK00" + item.parcelNumber + "INLOG"}</td>
+                                                                                    <td>
+                                                                                          {
+                                                                                                new Date(item.bookingDate).getDate()+'/'+(new Date(item.bookingDate).getMonth()+1)+'/'+new Date(item.bookingDate).getFullYear()
+                                                                                          }
+                                                                                    </td>
+                                                                                    <td>
+                                                                                          {
+                                                                                                new Date(item.bookingDate).getHours() + ":" + new Date(item.bookingDate).getMinutes() + ":" + new Date(item.bookingDate).getSeconds()
+                                                                                          }
+                                                                                    </td>
+                                                                                    <td>{item.branch}</td>
                                                                                     <td>{item.status}</td>
                                                                               </tr>
                                                                         )) : <h1>No Data Found</h1>
                                                             }
                                                       </tbody>
                                                 </Table>
-                                          </> : ""
+                                          </div> : ""
                               }
 
                         </div>

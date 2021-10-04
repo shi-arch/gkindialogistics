@@ -41,6 +41,7 @@ export default function UserList() {
     const [errType, setErrType] = React.useState("");
     const [region, setRegion] = React.useState("");
     const [country, setCountry] = React.useState("");
+    const [branch, setBranch] = React.useState("");    
     const [name, setName] = React.useState("");
     const [contact, setContact] = React.useState("");
     const [pinCode, setPinCode] = React.useState("");
@@ -62,8 +63,9 @@ export default function UserList() {
             setError("")
             setErrType("")
             const obj = {
-                name: name, pinCode: pinCode, address2: address2, address1: address1, country: country, region: region, city: city, contact: contact, status: "Recieved"
+                name: name, pinCode: pinCode, address2: address2, address1: address1, country: country, region: region, city: city, contact: contact, status: "Recieved", branch: branch
             }
+            debugger
             const response = await apiResponse(params.baseUrl + "generateparcel", obj)
             console.log(response, 'rr')
             if (response && response.data && response.data.status) {
@@ -103,6 +105,9 @@ export default function UserList() {
                 break;
             case "address2":
                 setAddress2(value)
+                break;
+            case "branch":
+                setBranch(value)
         }
     }
 
@@ -114,7 +119,7 @@ export default function UserList() {
             setError("Please enter the name")
             setErrType("name")
             return valid = false
-        }
+        }        
         if (!contact) {
             setError("Please enter the contact")
             setErrType("contact")
@@ -148,6 +153,11 @@ export default function UserList() {
         if (!city) {
             setErrType("city")
             setError("Please enter the City")
+            return valid = false
+        }
+        if (!branch) {
+            setError("Please enter the branch name")
+            setErrType("branch")
             return valid = false
         }
         return valid
@@ -209,6 +219,12 @@ export default function UserList() {
                             <Col md={6}>
                             <TextField style={{ width: "100%" }} id="standard-basic" value={pinCode} onChange={getData} name="pinCode" label="Pin-code" />
                                 <span style={{ color: "red", float: "left" }}>{errType == "pinCode" ? error : ""}</span>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col md={6}>
+                                <TextField style={{ width: "100%" }} id="standard-basic" value={branch} onChange={getData} name="branch" label="Branch Name" />
+                                <span style={{ color: "red", float: "left" }}>{errType == "branch" ? error : ""}</span>
                             </Col>
                         </Row>
                         <Row>

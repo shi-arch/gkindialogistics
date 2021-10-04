@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import Parcel from '../assets/logo.jpg';
 import { Container, Col, Form, Row, FormGroup, Label, Input, Button } from 'reactstrap';
+import Box from '@mui/material/Box';
+import TxtField from '@mui/material/TextField';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import { Link } from "react-router-dom";
 import Dialog from '@material-ui/core/Dialog';
@@ -26,11 +28,11 @@ const useStyles = makeStyles((theme) => ({
                   width: '25ch',
             },
       },
-    "@media (max-width: 533px)": {
-        test: {
-            textAlign: "center!important"
-        },
-    }
+      "@media (max-width: 533px)": {
+            test: {
+                  textAlign: "center!important"
+            },
+      }
 }));
 
 
@@ -38,6 +40,7 @@ const Header = (props) => {
       const classes = useStyles();
       const history = useHistory()
       const [open, setOpen] = React.useState(false);
+      const [openContactUs, setOpenContactUs] = React.useState(false);
       const [email, setEmail] = React.useState("");
       const [adminLabel, setAdminLabel] = React.useState("");
       const [error, setError] = React.useState("");
@@ -120,27 +123,68 @@ const Header = (props) => {
                               </Button>
                         </DialogActions>
                   </Dialog>
-                  <div style={{ margin: "0px", padding: "10px 10px", textAlign: "center" }}>
+                  <Dialog
+                        open={openContactUs}
+                        TransitionComponent={Transition}
+                        keepMounted
+                        onClose={handleClose}
+                        aria-labelledby="alert-dialog-slide-title"
+                        aria-describedby="alert-dialog-slide-description"
+                  >
+                        <DialogTitle id="alert-dialog-slide-title">{"Contact Us"}</DialogTitle>
+                        <DialogContent>
+                              <DialogContentText id="alert-dialog-slide-description">
+                                    <Row>
+                                          <Col md={6} sm={6} xs={6}>
+                                                <TextField id="filled-basic" label="Filled" variant="filled" />
+                                          </Col>
+                                          <Col md={6} sm={6} xs={6}>
+                                                <TextField id="filled-basic" label="Filled" variant="filled" />
+                                          </Col>
+                                          <Col md={6} sm={6} xs={6}>
+                                                <TextField id="filled-basic" label="Filled" variant="filled" />
+                                          </Col>
+                                          <Col md={6} sm={6} xs={6}>
+                                                <TextField id="filled-basic" label="Filled" variant="filled" />
+                                          </Col>
+                                          <Col md={6} sm={6} xs={6}>
+                                                <TextField id="filled-basic" label="Filled" variant="filled" />
+                                          </Col>
+                                          <Col md={6} sm={6} xs={6}>
+                                          </Col>
+                                    </Row>
+                              </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                              <Button onClick={login} color="primary">
+                                    Submit
+                              </Button>
+                              <Button onClick={() => setOpenContactUs(false)} color="primary">
+                                    Cancel
+                              </Button>
+                        </DialogActions>
+                  </Dialog>
+                  <div style={{ margin: "0% 2%", padding: "10px 10px", textAlign: "center" }}>
                         <Row>
-                              <Col md={1} sm={6} xs={6}>
+                              {/* <Col md={1} sm={6} xs={6}>
                                     <Button variant="contained" color="primary" onClick={goBack} style={{ marginRight: "10px", marginTop: "15px" }}>
                                           <KeyboardBackspaceIcon />
                                     </Button>
-                              </Col>
-                              <Col md={2} sm={6} xs={6}>
+                              </Col> */}
+                              <Col md={4} sm={6} xs={6} style={{textAlign: "left"}}>
                                     <img style={{ width: "100px" }} src={Parcel} />
                               </Col>
-                              <Col md={5} sm={4}>
-                                    <h1 className={classes.test} style={{ color: "blue", textAlign: "end" }}>GKINDIALOGISTICS</h1>
+                              <Col md={4} sm={4}>
+                                    <h1 className={classes.test} style={{ color: "#0f99d3", textAlign: "end" }}>G K INDIA LOGISTICS</h1>
                               </Col>
-                              <Col md={4}>
-                                    <Button variant="contained" onClick={goBack} style={{ marginRight: "10px" }} color="primary">
+                              <Col md={4} style={{ textAlign: "right" }}>
+                                    <Button variant="contained" onClick={goBack} style={{ marginRight: "10px", background: "rgb(15, 153, 211)" }} color="primary">
                                           Home
                                     </Button>
-                                    <Button variant="contained" color="primary" onClick={handleClickOpen} style={{ marginRight: "10px" }}>
+                                    <Button variant="contained" color="primary" onClick={handleClickOpen} style={{ marginRight: "10px", background: "rgb(15, 153, 211)" }}>
                                           {adminLabel}
                                     </Button>
-                                    <Button variant="contained" color="secondary">
+                                    <Button variant="contained" onClick={() => setOpenContactUs(true)} color="secondary">
                                           Contact Us
                                     </Button>
                               </Col>
